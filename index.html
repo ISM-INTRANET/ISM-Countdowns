@@ -44,36 +44,42 @@
   /* QR Code section - inside right column */
   .qr-section {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px;
     background: rgba(0,0,0,0.2);
     border-radius: 10px;
     margin-top: 10px;
+    align-items: center;
+  }
+
+  .qr-header {
+    font-size: clamp(13px, 1.1vw, 12px);
+    font-weight: bold;
+    color: #eaf3f7;
+    text-align: center;
+    margin-bottom: 5px;
   }
 
   .qr-code {
-    width: 80px;
+    width: 130px;
     height: auto;
     border-radius: 6px;
   }
 
-  .qr-text {
-    font-size: clamp(8px, 0.9vw, 10px);
+  .qr-footer {
+    font-size: clamp(9px, 1vw, 11px);
     color: #eaf3f7;
-    text-align: left;
+    text-align: center;
+    margin-top: 5px;
   }
 
-  .qr-text div {
-    margin-bottom: 4px;
-  }
-
-  .qr-text a {
+  .qr-footer a {
     color: #eaf3f7;
     text-decoration: none;
   }
 
-  .qr-text a:hover {
+  .qr-footer a:hover {
     text-decoration: underline;
   }
 
@@ -214,11 +220,12 @@ internalMeetings.forEach(e => colRight.appendChild(makeCard(e)));
 const qrSection = document.createElement('div');
 qrSection.className = 'qr-section';
 qrSection.innerHTML = `
-  <img class="qr-code" src="QR.png" alt="QR Code">
-  <div class="qr-text">
 
-    <div>Digital Attendance Submission Form</div>
-    <div>bit.ly/MeetingISM</div>
+  <div class="qr-header">Digital Attendance Submission Form</div>
+
+  <img class="qr-code" src="QR.png" alt="QR Code">
+
+  <div class="qr-footer">bit.ly/MeetingISM
 
   </div>
 `;
