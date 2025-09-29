@@ -28,29 +28,65 @@
 
   /* PANEL (your frame) */
   .panel {
-  background: rgba(46, 67, 76, 0.55);
-  border: 0px solid rgba(255,255,255,0.12);
-  border-radius: 16px;
-  padding: min(2vw, 22px);
-  box-shadow: 0 10px 28px rgba(0,0,0,0.24);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-left: -68px;
-  margin-top: 104px;
-  height: auto;           
-}
+    background: rgba(46, 67, 76, 0.55);
+    border: 0px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: min(2vw, 22px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.24);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-left: -68px;
+    margin-top: 104px;
+    height: auto;
+  }
+
+  /* QR Code section - inside right column */
+  .qr-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+
+  .qr-code {
+    width: 80px;
+    height: auto;
+    border-radius: 6px;
+  }
+
+  .qr-text {
+    font-size: clamp(8px, 0.9vw, 10px);
+    color: #eaf3f7;
+    text-align: left;
+  }
+
+  .qr-text div {
+    margin-bottom: 4px;
+  }
+
+  .qr-text a {
+    color: #eaf3f7;
+    text-decoration: none;
+  }
+
+  .qr-text a:hover {
+    text-decoration: underline;
+  }
 
   .head{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  font-weight: 800;
-  font-size: clamp(10px, 1.4vw, 14px); /* was clamp(16px,1.6vw,22px) */
-  color: #fff;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.55);
-  margin: 0 0 2px 0;          /* tighter */
-}
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    font-weight: 800;
+    font-size: clamp(10px, 1.4vw, 14px);
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.55);
+    margin: 0 0 2px 0;
+  }
 
   /* TWO EXPLICIT COLUMNS (no auto-flow surprises) */
   .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
@@ -58,31 +94,31 @@
 
   /* COUNTDOWN CARD — compact */
   .card{
-  background: var(--card);
-  border-radius: 10px;
-  min-height: 70px;          /* was 160px */
-  padding: 7px;              /* was 12px */
-  display:flex; flex-direction:column; justify-content:space-between;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.22);
-}
+    background: var(--card);
+    border-radius: 10px;
+    min-height: 70px;
+    padding: 7px;
+    display:flex; flex-direction:column; justify-content:space-between;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.22);
+  }
   .title{ text-align:center; font-weight:800; font-size:clamp(12px,1.1vw,12px); color:#fff; }
   .counter{ display:flex; align-items:center; justify-content:center; }
-.row{ display:flex; gap:8px; }                       /* was 10–12px */
-.unit{
-  background: var(--chip);
-  padding: 5px 7px;                                  /* was 8–10px */
-  border-radius: 8px;
-  min-width: 42px;                                   /* was 74–86px */
-  text-align:center;
-  box-sizing:border-box;
-}
-.num{ font-size:clamp(14px,1.8vw,18px); font-weight:800; line-height:1; color:#fff; }
-.lbl{ font-size:clamp(6px,0.8vw,9px); opacity:.95; color:#eef4f7; }
+  .row{ display:flex; gap:8px; }
+  .unit{
+    background: var(--chip);
+    padding: 5px 7px;
+    border-radius: 8px;
+    min-width: 42px;
+    text-align:center;
+    box-sizing:border-box;
+  }
+  .num{ font-size:clamp(14px,1.8vw,18px); font-weight:800; line-height:1; color:#fff; }
+  .lbl{ font-size:clamp(6px,0.8vw,9px); opacity:.95; color:#eef4f7; }
   .meta{
-  text-align:center; opacity:.95; color:#eaf3f7;
-  font-size:clamp(9px,0.8vw,9px);                  /* was ~11–14px */
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
+    text-align:center; opacity:.95; color:#eaf3f7;
+    font-size:clamp(9px,0.8vw,9px);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
   .done{ color:#b3ffb3; font-weight:800; font-size:clamp(12px,1.4vw,18px); }
 
   /* Optional: tighten on smaller widths */
@@ -107,7 +143,10 @@
       <!-- Two explicit columns -->
       <div class="grid2">
         <div id="col-left" class="col"></div>
-        <div id="col-right" class="col"></div>
+        <div id="col-right" class="col">
+          <!-- Internal meetings will be inserted here by JavaScript -->
+          <!-- QR Code will be added after the last meeting -->
+        </div>
       </div>
     </section>
   </div>
@@ -117,24 +156,24 @@
 /* Left column: Key Meetings (includes Quotation Committee + Monthly Business Review) */
 const keyMeetings = [
   { title:"BEDB Board Meeting",
-    when:"2025-10-07T14:00:00+08:00",
+    when:"2025-10-07T15:00:00+08:00",
     where:"Level 18, Conference Room, MOFE • Tuesday, 7 October 2025" },
 
   { title:"ISDAC",
-    when:"2025-09-16T08:30:00+08:00",
-    where:"Bilik Mesyuarat TMKE (F), Level 17 MOFE • Tuesday, 16 September 2025" },
+    when:"2025-10-14T14:00:00+08:00",
+    where:"Bilik Mesyuarat TMKE (F), Level 17 MOFE • Tuesday, 14 October 2025" },
 
   { title:"Tender Committee",
-    when:"2025-10-08T14:00:00+08:00",
-    where:"Bilik Mesyuarat TMKE (F), Level 17 MOFE • Wednesday, 8 October 2025" },
+    when:"2025-10-15T10:30:00+08:00",
+    where:"Bilik Mesyuarat TMKE (F), Level 17 MOFE • Wednesday, 15 October 2025" },
 
   { title:"Quotation Committee",
-    when:"2025-08-25T10:00:00+08:00",
+    when:"2025-08-25T10:30:00+08:00",
     where:"ISM Meeting Room, Level 2, D&T • Monday, 25 August 2025" },
 
   { title:"Monthly Business Review",
-    when:"2025-08-08T09:00:00+08:00",
-    where:"ISM Meeting Room, Level 2, D&T • Friday, 8 August 2025" }
+    when:"2025-10-09T14:00:00+08:00",
+    where:"ISM Meeting Room, Level 2, D&T • Thursday, 9 October 2025" }
 ];
 
 /* Right column: Internal Meetings */
@@ -144,8 +183,8 @@ const internalMeetings = [
     where:"ISM Meeting Room, Level 2, D&T • Monday, 6 October 2025" },
 
   { title:"Growth Alignment Meeting",
-    when:"2025-09-15T14:00:00+08:00",
-    where:"ISM Meeting Room, Level 2, D&T • Monday, 15 September 2025" }
+    when:"2025-10-20T14:00:00+08:00",
+    where:"ISM Meeting Room, Level 2, D&T • Monday, 20 October 2025" }
 ];
 
 /* ===== RENDER + TICK ===== */
@@ -165,8 +204,24 @@ function makeCard(ev){
   return card;
 }
 
+// Add key meetings to left column
 keyMeetings.forEach(e => colLeft.appendChild(makeCard(e)));
+
+// Add internal meetings to right column
 internalMeetings.forEach(e => colRight.appendChild(makeCard(e)));
+
+// Add QR code to right column after the meetings
+const qrSection = document.createElement('div');
+qrSection.className = 'qr-section';
+qrSection.innerHTML = `
+  <img class="qr-code" src="QR.png" alt="QR Code">
+  <div class="qr-text">
+    <div>Digital Attendance Submission Form</div>  
+    <div><a href="https://bit.ly/MeetingISM">bit.ly/MeetingISM</a></div>
+  
+  </div>
+`;
+colRight.appendChild(qrSection);
 
 function renderCard(card){
   const when = new Date(card.dataset.when);
