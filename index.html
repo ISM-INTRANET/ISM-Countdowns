@@ -4,293 +4,828 @@
 <meta charset="utf-8" />
 <meta http-equiv="refresh" content="3600">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+
 <title>ISM Countdowns</title>
 
 <style>
-  :root { --card: rgba(0,0,0,0.35); --chip: rgba(255,255,255,0.18); --fg:#eaf3f7; }
 
-  /* BACKGROUND */
-  html, body {
+  :root {
+    --card: rgba(0,0,0,0.35);
+    --chip: rgba(255,255,255,0.18);
+    --fg: #eaf3f7;
+  }
+
+
+  /* =========================================================
+     BACKGROUND
+     ========================================================= */
+
+  html,
+  body {
     height: 100%;
     margin: 0;
     font-family: Segoe UI, Inter, Arial, sans-serif;
     color: var(--fg);
   }
+
   body {
     background: url("background.png") left center / cover no-repeat fixed;
     overflow: hidden;
   }
 
-  /* MAIN LAYOUT */
+
+  /* =========================================================
+     MAIN LAYOUT
+     ========================================================= */
+
   .wrap {
     height: 100%;
     width: 100%;
+
     display: grid;
-    grid-template-columns: 1fr min(58vw, 1080px);
+
+    /*
+      LEFT  = Haze Response poster
+      RIGHT = Countdown panel
+    */
+    grid-template-columns: 40% 60%;
+
     align-items: center;
-    gap: min(2vw, 28px);
-    padding: min(3vw, 36px);
+
+    gap: 0;
+
+    padding: 0;
+
     box-sizing: border-box;
   }
 
-  /* PANEL */
-  .panel {
-    background: rgba(46, 67, 76, 0.55);
-    border: 0px solid rgba(255,255,255,0.12);
-    border-radius: 16px;
-    padding: min(2vw, 22px);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.24);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    margin-left: -68px;
-    margin-top: 104px;
-    height: auto;
+
+  /* Empty left-side area */
+  .wrap > div:first-child {
+    width: 100%;
+    height: 100%;
   }
 
-  /* HEADER */
+
+  /* =========================================================
+     COUNTDOWN PANEL
+     ========================================================= */
+
+  .panel {
+    background: rgba(46, 67, 76, 0.55);
+
+    border: 0 solid rgba(255,255,255,0.12);
+
+    border-radius: 16px;
+
+    padding: 22px;
+
+    box-shadow:
+      0 10px 28px rgba(0,0,0,0.24);
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+
+    /*
+      IMPORTANT:
+      No negative margin here.
+      This prevents the panel from overlapping
+      the Haze Response section.
+    */
+    margin: 0;
+
+    height: auto;
+
+    /*
+      Prevent the panel from expanding
+      outside its 60% grid column.
+    */
+    min-width: 0;
+
+    box-sizing: border-box;
+  }
+
+
+  /* =========================================================
+     HEADER
+     ========================================================= */
+
   .head {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     gap: 8px;
+
     font-weight: 800;
+
     font-size: clamp(10px, 1.4vw, 14px);
+
     color: #fff;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.55);
+
+    text-shadow:
+      0 2px 10px rgba(0,0,0,0.55);
+
     margin: 0 0 2px 0;
   }
 
-  /* GRID LAYOUT */
+
+  /* =========================================================
+     TWO-COLUMN MEETING GRID
+     ========================================================= */
+
   .grid2 {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     gap: 10px;
+
+    min-width: 0;
   }
+
+
   .col {
     display: flex;
     flex-direction: column;
+
     gap: 10px;
+
+    min-width: 0;
   }
 
-  /* COUNTDOWN CARD */
+
+  /* =========================================================
+     COUNTDOWN CARD
+     ========================================================= */
+
   .card {
     background: var(--card);
+
     border-radius: 10px;
+
     min-height: 70px;
+
     padding: 7px;
+
     display: flex;
     flex-direction: column;
+
     justify-content: space-between;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.22);
+
+    box-shadow:
+      0 8px 20px rgba(0,0,0,0.22);
+
+    box-sizing: border-box;
+
+    min-width: 0;
   }
+
+
+  /* =========================================================
+     MEETING TITLE
+     ========================================================= */
 
   .title {
     text-align: center;
+
     font-weight: 800;
+
     font-size: clamp(12px, 1.1vw, 12px);
+
     color: #fff;
   }
+
+
+  /* =========================================================
+     COUNTDOWN
+     ========================================================= */
 
   .counter {
     display: flex;
+
     align-items: center;
     justify-content: center;
+
+    min-height: 32px;
   }
+
 
   .row {
     display: flex;
+
     gap: 8px;
+
+    justify-content: center;
+
+    max-width: 100%;
   }
+
 
   .unit {
     background: var(--chip);
+
     padding: 5px 7px;
+
     border-radius: 8px;
+
     min-width: 42px;
+
     text-align: center;
+
     box-sizing: border-box;
   }
 
+
   .num {
     font-size: clamp(14px, 1.8vw, 18px);
+
     font-weight: 800;
+
     line-height: 1;
+
     color: #fff;
   }
 
+
   .lbl {
     font-size: clamp(6px, 0.8vw, 9px);
+
     opacity: .95;
+
     color: #eef4f7;
   }
 
+
+  /* =========================================================
+     MEETING DETAILS
+     ========================================================= */
+
   .meta {
     text-align: center;
+
     opacity: .95;
+
     color: #eaf3f7;
+
     font-size: clamp(9px, 0.8vw, 9px);
+
     white-space: nowrap;
+
     overflow: hidden;
+
     text-overflow: ellipsis;
   }
 
+
+  /* =========================================================
+     COMPLETED / TO BE ANNOUNCED
+     ========================================================= */
+
   .done {
     color: #b3ffb3;
+
     font-weight: 800;
+
     font-size: clamp(12px, 1.4vw, 18px);
   }
 
-  /* QR CODE SECTION */
+
+  /* =========================================================
+     QR CODE SECTION
+     ========================================================= */
+
   .qr-section {
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
+
     gap: 10px;
+
     padding: 12px;
+
     background: rgba(0,0,0,0.2);
+
     border-radius: 10px;
+
     margin-top: 10px;
+
+    box-sizing: border-box;
   }
+
 
   .qr-row {
     display: flex;
+
     flex-direction: row;
+
     align-items: center;
+
     justify-content: center;
+
     gap: 16px;
+
+    max-width: 100%;
   }
+
 
   .qr-code {
     width: 130px;
+
     height: auto;
+
     border-radius: 6px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.4);
+
+    box-shadow:
+      0 0 12px rgba(0,0,0,0.4);
   }
+
 
   .qr-preview {
     width: 220px;
+
     height: auto;
+
     border-radius: 6px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.4);
+
+    box-shadow:
+      0 0 12px rgba(0,0,0,0.4);
   }
 
+
   .qr-header {
-    font-size: clamp(13px, 1.1vw, 12px);
+    font-size: clamp(12px, 1.1vw, 13px);
+
     font-weight: bold;
+
     color: #eaf3f7;
+
     text-align: center;
+
     margin-bottom: 5px;
   }
 
+
   .qr-footer {
     font-size: clamp(9px, 1vw, 11px);
+
     color: #eaf3f7;
+
     text-align: center;
+
     margin-top: 5px;
   }
 
-  /* MOBILE */
+
+  /* =========================================================
+     MOBILE / SMALL SCREEN
+     ========================================================= */
+
   @media (max-width: 1100px) {
-    .wrap { grid-template-columns: 1fr; }
-    .panel { margin-left: 0; margin-top: 12px; }
-    .grid2 { grid-template-columns: 1fr; }
-    body { overflow: auto; }
+
+    .wrap {
+      grid-template-columns: 1fr;
+    }
+
+    .panel {
+      margin: 12px;
+    }
+
+    .grid2 {
+      grid-template-columns: 1fr;
+    }
+
+    body {
+      overflow: auto;
+    }
+
   }
+
+
+  /* =========================================================
+     SMALLER SCREEN QR ADJUSTMENT
+     ========================================================= */
+
+  @media (max-width: 700px) {
+
+    .qr-row {
+      flex-direction: column;
+    }
+
+    .qr-code {
+      width: 120px;
+    }
+
+    .qr-preview {
+      width: 200px;
+    }
+
+  }
+
 </style>
 </head>
 
+
 <body>
+
   <div class="wrap">
-    <div><!-- left side background only --></div>
+
+    <!--
+      LEFT SIDE
+      The Haze Response poster is part of background.png.
+      This empty div simply reserves the left 40%.
+    -->
+    <div></div>
+
+
+    <!-- =====================================================
+         COUNTDOWN PANEL
+         ===================================================== -->
 
     <section class="panel">
+
       <div class="head">
-        <div>Key Meetings Countdown:</div>
-        <div>Internal Meetings Countdown:</div>
+
+        <div>
+          Key Meetings Countdown:
+        </div>
+
+        <div>
+          Internal Meetings Countdown:
+        </div>
+
       </div>
+
+
+      <!-- ===================================================
+           MEETING GRID
+           =================================================== -->
 
       <div class="grid2">
-        <div id="col-left" class="col"></div>
-        <div id="col-right" class="col"></div>
+
+        <div
+          id="col-left"
+          class="col">
+        </div>
+
+
+        <div
+          id="col-right"
+          class="col">
+        </div>
+
       </div>
+
     </section>
+
   </div>
 
+
 <script>
-/* ===== MEETINGS ===== */
+
+/* =========================================================
+   KEY MEETINGS
+   ========================================================= */
+
 const keyMeetings = [
-  { title:"BEDB Board Meeting", when:"2026-05-15T09:00:00+08:00", where:"Level 18, Conference Room, MOFE • Friday, 15 May 2026" },
-  { title:"ISDAC", when:"2026-09-21T09:00:00+08:00", where:"TMK Meeting Room, Level 17 MOF • Monday, 21 September 2026" },
-  { title:"Tender Committee", when:"2026-06-03T08:30:00+08:00", where:"Bilik Mesyuarat TMKE (F), Level 17 MOFE • Wednesday, 3 June 2026" },
-  { title:"Quotation Committee", when:"2026-09-23T09:00:00+08:00", where:"ISM Meeting Room, Level 2, D&T • Wednesday, 23 September 2026" },
-  { title:"Monthly Business Review", when:"2026-09-15T09:00:00+08:00", where:"ISM Meeting Room, Level 2, D&T • Tuesday, 15 Septemeber 2026" }
+
+  {
+    title: "BEDB Board Meeting",
+    when: "2026-05-15T09:00:00+08:00",
+    where: "Level 18, Conference Room, MOFE • Friday, 15 May 2026"
+  },
+
+  {
+    title: "ISDAC",
+    when: "2026-09-21T09:00:00+08:00",
+    where: "TMK Meeting Room, Level 17 MOF • Monday, 21 September 2026"
+  },
+
+  {
+    title: "Tender Committee",
+    when: "2026-06-03T08:30:00+08:00",
+    where: "Bilik Mesyuarat TMKE (F), Level 17 MOFE • Wednesday, 3 June 2026"
+  },
+
+  {
+    title: "Quotation Committee",
+    when: "2026-09-23T09:00:00+08:00",
+    where: "ISM Meeting Room, Level 2, D&T • Wednesday, 23 September 2026"
+  },
+
+  {
+    title: "Monthly Business Review",
+    when: "2026-09-15T09:00:00+08:00",
+    where: "ISM Meeting Room, Level 2, D&T • Tuesday, 15 September 2026"
+  }
+
 ];
+
+
+/* =========================================================
+   INTERNAL MEETINGS
+   ========================================================= */
 
 const internalMeetings = [
-  { title:"Core Alignment Meeting", when:"2026-09-07T14:00:00+08:00", where:"ISM Meeting Room, Level 2, D&T • Monday, 7 September 2026" },
-  { title:"Growth Alignment Meeting", when:"2026-09-03T10:30:00+08:00", where:"ISM Meeting Room, Level 2, D&T • Thursday, 3 September 2026" }
+
+  {
+    title: "Core Alignment Meeting",
+    when: "2026-09-07T14:00:00+08:00",
+    where: "ISM Meeting Room, Level 2, D&T • Monday, 7 September 2026"
+  },
+
+  {
+    title: "Growth Alignment Meeting",
+    when: "2026-09-03T10:30:00+08:00",
+    where: "ISM Meeting Room, Level 2, D&T • Thursday, 3 September 2026"
+  }
+
 ];
 
-const colLeft  = document.getElementById('col-left');
-const colRight = document.getElementById('col-right');
-const z = n => String(n).padStart(2,"0");
 
-function makeCard(ev){
-  const card = document.createElement('article');
-  card.className = 'card';
+/* =========================================================
+   GET COLUMNS
+   ========================================================= */
+
+const colLeft =
+  document.getElementById("col-left");
+
+const colRight =
+  document.getElementById("col-right");
+
+
+/* =========================================================
+   NUMBER FORMAT
+   ========================================================= */
+
+const z = n =>
+  String(n).padStart(2, "0");
+
+
+/* =========================================================
+   CREATE MEETING CARD
+   ========================================================= */
+
+function makeCard(ev) {
+
+  const card =
+    document.createElement("article");
+
+  card.className = "card";
+
   card.dataset.when = ev.when;
+
   card.innerHTML = `
-    <div class="title">${ev.title || ''}</div>
+
+    <div class="title">
+      ${ev.title || ""}
+    </div>
+
     <div class="counter"></div>
-    <div class="meta">${ev.where || ''}</div>
+
+    <div class="meta">
+      ${ev.where || ""}
+    </div>
+
   `;
+
   return card;
 }
 
-keyMeetings.forEach(e => colLeft.appendChild(makeCard(e)));
-internalMeetings.forEach(e => colRight.appendChild(makeCard(e)));
 
-/* ADD QR SECTION */
-const qrSection = document.createElement('div');
-qrSection.className = 'qr-section';
+/* =========================================================
+   ADD KEY MEETINGS
+   ========================================================= */
+
+keyMeetings.forEach(e => {
+
+  colLeft.appendChild(
+    makeCard(e)
+  );
+
+});
+
+
+/* =========================================================
+   ADD INTERNAL MEETINGS
+   ========================================================= */
+
+internalMeetings.forEach(e => {
+
+  colRight.appendChild(
+    makeCard(e)
+  );
+
+});
+
+
+/* =========================================================
+   QR SECTION
+   ========================================================= */
+
+const qrSection =
+  document.createElement("div");
+
+qrSection.className =
+  "qr-section";
+
+
 qrSection.innerHTML = `
-  <div class="qr-header">ISM INTRANET</div>
-  <div class="qr-header">Your Digital HQ for Information - All in One Place</div>
-  <div class="qr-row">
-    <img class="qr-code" src="QR.png" alt="QR Code">
-    <img class="qr-preview" src="Home.png" alt="ISM Homepage Preview">
+
+  <div class="qr-header">
+    ISM INTRANET
   </div>
-  <div class="qr-footer">bit.ly/ISMNET</div>
+
+  <div class="qr-header">
+    Your Digital HQ for Information - All in One Place
+  </div>
+
+  <div class="qr-row">
+
+    <img
+      class="qr-code"
+      src="QR.png"
+      alt="QR Code"
+    >
+
+    <img
+      class="qr-preview"
+      src="Home.png"
+      alt="ISM Homepage Preview"
+    >
+
+  </div>
+
+  <div class="qr-footer">
+    bit.ly/ISMNET
+  </div>
+
 `;
+
+
 colRight.appendChild(qrSection);
 
-/* TIMER FUNCTION */
-function renderCard(card){
-  const when = new Date(card.dataset.when);
-  const now  = new Date();
-  const diff = when - now;
-  const ctr  = card.querySelector('.counter');
 
-  if (isNaN(when)) { ctr.textContent = "Invalid date"; return; }
-  if (diff <= 0) { ctr.innerHTML = `<div class="done">To Be Announced</div>`; return; }
+/* =========================================================
+   TIMER FUNCTION
+   ========================================================= */
 
-  const s = Math.floor(diff/1000);
-  const d = Math.floor(s/86400);
-  const h = Math.floor((s%86400)/3600);
-  const m = Math.floor((s%3600)/60);
-  const sec = s%60;
+function renderCard(card) {
+
+  const when =
+    new Date(card.dataset.when);
+
+  const now =
+    new Date();
+
+  const diff =
+    when - now;
+
+  const ctr =
+    card.querySelector(".counter");
+
+
+  /* INVALID DATE */
+
+  if (isNaN(when)) {
+
+    ctr.textContent =
+      "Invalid date";
+
+    return;
+  }
+
+
+  /* MEETING HAS PASSED */
+
+  if (diff <= 0) {
+
+    ctr.innerHTML =
+      `<div class="done">To Be Announced</div>`;
+
+    return;
+  }
+
+
+  /* =======================================================
+     CALCULATE TIME
+     ======================================================= */
+
+  const s =
+    Math.floor(diff / 1000);
+
+  const d =
+    Math.floor(s / 86400);
+
+  const h =
+    Math.floor(
+      (s % 86400) / 3600
+    );
+
+  const m =
+    Math.floor(
+      (s % 3600) / 60
+    );
+
+  const sec =
+    s % 60;
+
+
+  /* =======================================================
+     DISPLAY COUNTDOWN
+     ======================================================= */
 
   ctr.innerHTML = `
+
     <div class="row">
-      <div class="unit"><div class="num">${z(d)}</div><div class="lbl">days</div></div>
-      <div class="unit"><div class="num">${z(h)}</div><div class="lbl">hrs</div></div>
-      <div class="unit"><div class="num">${z(m)}</div><div class="lbl">min</div></div>
-      <div class="unit"><div class="num">${z(sec)}</div><div class="lbl">sec</div></div>
-    </div>`;
+
+      <div class="unit">
+
+        <div class="num">
+          ${z(d)}
+        </div>
+
+        <div class="lbl">
+          days
+        </div>
+
+      </div>
+
+
+      <div class="unit">
+
+        <div class="num">
+          ${z(h)}
+        </div>
+
+        <div class="lbl">
+          hrs
+        </div>
+
+      </div>
+
+
+      <div class="unit">
+
+        <div class="num">
+          ${z(m)}
+        </div>
+
+        <div class="lbl">
+          min
+        </div>
+
+      </div>
+
+
+      <div class="unit">
+
+        <div class="num">
+          ${z(sec)}
+        </div>
+
+        <div class="lbl">
+          sec
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
 }
 
-function tick(){ document.querySelectorAll('.card').forEach(renderCard); }
-tick(); setInterval(tick, 1000);
+
+/* =========================================================
+   UPDATE ALL COUNTDOWNS
+   ========================================================= */
+
+function tick() {
+
+  document
+    .querySelectorAll(".card")
+    .forEach(renderCard);
+
+}
+
+
+/* =========================================================
+   START TIMER
+   ========================================================= */
+
+tick();
+
+setInterval(
+  tick,
+  1000
+);
+
 </script>
+
 </body>
 </html>
